@@ -8,22 +8,38 @@ const initialPicturesCarousel = (picturesArrFromHomePage) => {
 };
 
 const createItem = (id, imgUrl, alt, credit, price) => {
-  return `
+  if (firstId == id) {
+    return ` <div id ="${id}"class="carousel-item active" data-bs-interval="2000"><h3>${alt}</h3>
+                                    <img src="${imgUrl}" class=" w-100" alt="${alt}"> 
+      </div>
+                  
+                                `;
+  } else {
+    return `
          
-                                <div class="carousel-item active " data-bs-interval="2000">
-                                    <img src="${imgUrl}" class=" w-100" alt="${alt}">
-                                </div>alt
+                                <div id ="${id}"class="carousel-item " data-bs-interval="2000"><h3>${alt}</h3>
+                                    <img src="${imgUrl}" class=" w-100" alt="${alt}"> cvcbxcb
+                                </div>
                                
-                            </div>
-                        </div>
-                      
-
+                           
 `;
+  }
 };
-let pictureInnerHtml;
+let firstId;
+const checkFirstId = () => {
+  for (let picture of picturesArr) {
+    if (picture) {
+      firstId = picture.id;
+      console.log(firstId);
+      return;
+    }
+  }
+};
+
 const createCarousel = () => {
+  checkFirstId();
   for (let pictures of picturesArr) {
-    pictureInnerHtml += createItem(
+    carouselDiv.innerHTML += createItem(
       pictures.id,
       pictures.imgUrl,
       pictures.alt,
@@ -31,7 +47,7 @@ const createCarousel = () => {
       pictures.price
     );
   }
-  carouselDiv.innerHTML = pictureInnerHtml;
+
   console.log(
     "🚀 ~ file: carousel.js:35 ~ createCarousel ~ carouselDiv",
     carouselDiv

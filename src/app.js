@@ -2,6 +2,7 @@ import PAGES from "./models/pageModel.js";
 import { pageChange } from "./routes/router.js";
 import "./initialData/initialData.js";
 import "./pages/homePage.js";
+import "./pages/signUp.js";
 
 document.getElementById("nav-home-page").addEventListener("click", () => {
   pageChange(PAGES.HOME);

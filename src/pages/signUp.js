@@ -1,65 +1,56 @@
 import validName from "../validation/nameValidation.js";
 import validEmail from "../validation/emailValidation.js";
 import validPassword from "../validation/passwordValid.js";
-let firstName;
-let lastName;
+import User from "../models/users.js";
+import { pageChange } from "../routes/router.js";
+import PAGES from "../models/pageModel.js";
 let name;
-let validationFirstName;
-let validationLastName;
 let firstNamebtnValid = false;
 let lastNamebtnValid = false;
-let email;
 let email1;
-let validationEmail;
 let emailbtnValid = false;
-let password;
 let password1;
-let validationPassword;
 let passworsbtnValid = false;
-let rePassword;
 let btnsValid;
-let validationRePassword;
 let rePassworsbtnValid = false;
-let signUpBotton;
+let isAdmin = false;
 
-firstName = document.getElementById("name-from-signUp-page");
-lastName = document.getElementById("lastName-from-signUp-page");
-validationFirstName = document.getElementById("validationFirstName");
-validationLastName = document.getElementById("validationLastName");
-email = document.getElementById("email-from-signUp-page");
-validationEmail = document.getElementById("validationEmail");
-password = document.getElementById("Password-from-signUp-page");
-validationPassword = document.getElementById("validationPassword");
-validationRePassword = document.getElementById("validationRePassword");
-rePassword = document.getElementById("RePassword-from-signUp-page");
-signUpBotton = document.getElementById("signUpBotton");
+let firstName = document.getElementById("name-from-signUp-page");
+let lastName = document.getElementById("lastName-from-signUp-page");
+let validationFirstName = document.getElementById("validationFirstName");
+let validationLastName = document.getElementById("validationLastName");
+let email = document.getElementById("email-from-signUp-page");
+let validationEmail = document.getElementById("validationEmail");
+let password = document.getElementById("Password-from-signUp-page");
+let validationPassword = document.getElementById("validationPassword");
+let validationRePassword = document.getElementById("validationRePassword");
+let rePassword = document.getElementById("RePassword-from-signUp-page");
+let signUpBotton = document.getElementById("signUpBotton");
+let AdminCheckBox = document.getElementById("AdminCheckBox");
+let stateFromSign = document.getElementById("stateFromSign");
+let countryFromSign = document.getElementById("countryFromSign");
+let cityFromSign = document.getElementById("cityFromSign");
+let streetFromSign = document.getElementById("streetFromSign");
+let houseFromSign = document.getElementById("houseFromSign");
+let zipFromSign = document.getElementById("zipFromSign");
+let numberFromSign = document.getElementById("numberFromSign");
+
 /* check if first and last name are valid when you change the input */
 
 firstName.addEventListener("input", () => {
-  console.log("dbjhvcjs");
   CheckName(firstName, validationFirstName);
-  console.log(btnsValid);
   if (btnsValid) {
     firstNamebtnValid = true;
     btnok();
   }
-  console.log(
-    "🚀 ~ file: signUp.js:18 ~ firstName.addEventListener ~ firstNamebtnValid",
-    firstNamebtnValid
-  );
 });
 
 lastName.addEventListener("input", () => {
-  console.log("dbjhvcjs");
   CheckName(lastName, validationLastName);
   if (btnsValid) {
     lastNamebtnValid = true;
     btnok();
   }
-  console.log(
-    "🚀 ~ file: signUp.js:18 ~ lasttName.addEventListener ~ lastNamebtnValid",
-    lastNamebtnValid
-  );
 });
 const CheckName = (theName, err) => {
   name = validName(theName.value);
@@ -94,13 +85,13 @@ const checkEmail = (theEmail, err) => {
   } else {
     /* error */
     err.innerHTML = email1;
+    err.classList.remove("d-none");
     return (btnsValid = false);
   }
 };
 
 /* check if the Passwpord from home signin isgood */
 password.addEventListener("input", () => {
-  console.log("hgvhgv");
   checkPassword(password, validationPassword);
   if (btnsValid) {
     passworsbtnValid = true;
@@ -120,10 +111,6 @@ password.addEventListener("input", () => {
 
 const checkPassword = (thePassword, err) => {
   password1 = validPassword(thePassword.value);
-  console.log(
-    "🚀 ~ file: signUp.js:106 ~ checkPassword ~ password1",
-    password1
-  );
 
   if (!password1.length) {
     err.classList.add("d-none");
@@ -137,7 +124,6 @@ const checkPassword = (thePassword, err) => {
 };
 /* ccheck if rePassword id similar to Password */
 rePassword.addEventListener("input", () => {
-  console.log("hgvhgv");
   if (rePassword.value === password.value) {
     rePassworsbtnValid = true;
     validationRePassword.classList.add("d-none");
@@ -158,17 +144,82 @@ const btnok = () => {
     lastNamebtnValid &&
     firstNamebtnValid
   ) {
-    console.log(
-      rePassworsbtnValid,
-      passworsbtnValid,
-      emailbtnValid,
-      lastNamebtnValid,
-      firstNamebtnValid
-    );
     signUpBotton.disabled = false;
   }
 };
-signUpBotton.addEventListener("click",()=>{
-    
 
-})
+let users;
+signUpBotton.addEventListener(
+  "click",
+  () => {
+    if (AdminCheckBox.checked) {
+      isAdmin = true;
+    } else {
+      isAdmin = false;
+    }
+    users = localStorage.getItem("users");
+    if (users) {
+      for (let user of users) {
+        if (user.email === email.value) {
+          //display msg - email already exists
+          validationEmail.innerHTML = "Email already exists";
+          validationEmail.classList.remove("d-none");
+          emailbtnValid = false;
+          signUpBotton.disabled = false;
+          return;
+        }
+      }
+    }
+
+    let nextUserId = localStorage.getItem("nextUserId");
+    nextUserId = +nextUserId;
+    let newUser = new User(
+      nextUserId++,
+      firstName.value,
+      lastName.value,
+      email.value,
+      password.value,
+      isAdmin,
+      stateFromSign.value,
+      countryFromSign.value,
+      cityFromSign.value,
+      streetFromSign.value,
+      houseFromSign.value,
+      zipFromSign.value,
+      numberFromSign.value
+    );
+    localStorage.setItem("nextUserId", nextUserId + "");
+    if (!users) {
+      //the first user
+      users = [newUser];
+      // let user = new User(inputName.value, inputEmail.value, inputPassword.value);
+      // users = [user]
+      localStorage.setItem("users", JSON.stringify(users));
+      /*
+      JSON.stringify(users) - convert array of objects to string
+      localStorage.setItem - store the json string to localStorage with 
+        key users 
+        and value users as json string
+    */
+    } else {
+      //we have users
+      users = JSON.parse(users); // convert from string to array of objects
+
+      for (let user of users) {
+        if (user.email === email.value) {
+          //display msg - email already exists
+          validationEmail.innerHTML = "Email already exists";
+          validationEmail.classList.remove("d-none");
+          emailbtnValid = false;
+          return;
+        }
+      }
+      //user provided new email
+      users = [...users, newUser];
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+    pageChange(PAGES.LOGIN);
+    /*  location.reload(); */
+  },
+  { once: true }
+);

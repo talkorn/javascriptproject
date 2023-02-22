@@ -41,7 +41,6 @@ const createpopUp = () => {
 
     document.getElementById(card).addEventListener("click", () => {
       const popup = () => {
-        console.log("jkgjy");
         cardsDiv.classList.add("d-none");
         popupCardDiv.classList.remove("d-none");
         popupCardDiv.innerHTML = `

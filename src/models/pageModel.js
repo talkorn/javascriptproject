@@ -5,5 +5,7 @@ const PAGES = {
   ADDPIC: "add-pic-page",
   SIGNUP: "signup-page",
   LOGIN: "login-page",
+  PROFILE: "profile-page",
+  LOGOUT: "logout-page",
 };
 export default PAGES;

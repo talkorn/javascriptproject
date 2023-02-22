@@ -4,7 +4,6 @@ let listDiv;
 const initialPicturesList = (picturesArrFromHomePage) => {
   picturesArr = picturesArrFromHomePage;
   listDiv = document.getElementById("home-page-pictures-list");
-  console.log("🚀 ~ file: List.js:7 ~ initialPicturesList ~ listDiv", listDiv);
   createList();
 };
 

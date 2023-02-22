@@ -30,7 +30,6 @@ const checkFirstId = () => {
   for (let picture of picturesArr) {
     if (picture) {
       firstId = picture.id;
-      console.log(firstId);
       return;
     }
   }
@@ -47,11 +46,6 @@ const createCarousel = () => {
       pictures.price
     );
   }
-
-  console.log(
-    "🚀 ~ file: carousel.js:35 ~ createCarousel ~ carouselDiv",
-    carouselDiv
-  );
 };
 
 export default initialPicturesCarousel;

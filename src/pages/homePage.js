@@ -12,7 +12,6 @@ window.addEventListener("load", () => {
     return;
   }
   picturesArr = JSON.parse(picturesArr);
-  console.log(picturesArr);
   initialPicturesList(picturesArr);
   initialPicturesCards(picturesArr);
   initialPicturesCarousel(picturesArr);

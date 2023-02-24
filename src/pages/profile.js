@@ -64,6 +64,7 @@ window.addEventListener("load", () => {
     emailFromProfile.value = existUser.email;
     PasswordFromProfile.value = existUser.password;
     RePasswordFromProfile.value = existUser.password;
+    AdminCheckBoxFromProfile.checked = existUser.isAdmin;
   }
 });
 

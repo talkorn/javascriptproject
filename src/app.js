@@ -5,6 +5,18 @@ import "./pages/homePage.js";
 import "./pages/signUp.js";
 import "./pages/login.js";
 import "./pages/profile.js";
+let afterSignIn = document.getElementById("afterSignIn");
+let beforeSignIn = document.getElementById("beforeSignIn");
+window.addEventListener("load", () => {
+  let existUser = localStorage.getItem("existUser");
+  if (existUser) {
+    existUser = JSON.parse(existUser);
+    beforeSignIn.classList.add("d-none");
+
+    afterSignIn.classList.remove("d-none");
+    /*  document.getElementById("nav-profile-page").innerText = existUser.firstName; */
+  }
+});
 
 document.getElementById("nav-home-page").addEventListener("click", () => {
   pageChange(PAGES.HOME);
